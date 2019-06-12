@@ -19,7 +19,7 @@ def synthesize_data(l,n,my,g,data_type='continuous'):
         
     if data_type == 'categorical':        
         from sklearn.preprocessing import OneHotEncoder
-        mx = 5 # categorical number for each variables
+        mx = 3 # categorical number for each variables
         # initial s (categorical variables)
         s = np.random.randint(0,mx,size=(l,n)) # integer values
         onehot_encoder = OneHotEncoder(sparse=False,categories='auto')

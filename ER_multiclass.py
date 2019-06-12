@@ -6,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 # 2019.06.112: Expectation Reflection for multiclass classification
 # input: x[l,n], y[l]
 # output: h0, w[n,m] (m = y.unique())
-def fit(x,y,niter_max=50,lamda=0.0):
+def fit(x,y,niter_max=50,regu=0.0):
     onehot_encoder = OneHotEncoder(sparse=False,categories='auto')
     y = onehot_encoder.fit_transform(y.reshape(-1,1))
 
@@ -20,7 +20,7 @@ def fit(x,y,niter_max=50,lamda=0.0):
     c = np.cov(dx,rowvar=False,bias=True)
 
     # 2019.05.15: ridge regression
-    c += lamda*np.identity(mx)
+    c += regu*np.identity(mx)
     c_inv = linalg.pinvh(c)
 
     w = np.random.normal(0.0,1./np.sqrt(mx),size=(mx,my))
