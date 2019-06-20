@@ -11,20 +11,21 @@ Output: w[n], X[l,n],y[l] (my  = y.unique())
 def synthesize_data(l,n,my,g,data_type='continuous'):        
     if data_type == 'binary':
         X = np.sign(np.random.rand(l,n)-0.5)
-        w = np.random.normal(0.,g,size=(n,my))
+        #w = np.random.normal(0.,g,size=(n,my))
+        w = np.random.normal(0.,g/np.sqrt(n),size=(n,my))
         
     if data_type == 'continuous':
         X = 2*np.random.rand(l,n)-1
-        w = np.random.normal(0.,g,size=(n,my))
+        w = np.random.normal(0.,g/np.sqrt(n),size=(n,my))
         
     if data_type == 'categorical':        
         from sklearn.preprocessing import OneHotEncoder
-        mx = 3 # categorical number for each variables
+        mx = 4 # categorical number for each variables
         # initial s (categorical variables)
         s = np.random.randint(0,mx,size=(l,n)) # integer values
         onehot_encoder = OneHotEncoder(sparse=False,categories='auto')
         X = onehot_encoder.fit_transform(s)
-        w = np.random.normal(0.,g,size=(n*mx,my))    
+        w = np.random.normal(0.,g/np.sqrt(n),size=(n*mx,my))
     
     # sum_j w_ji to each i = 0
     w -= w.mean(axis=1)[:,np.newaxis]  
@@ -42,7 +43,7 @@ def synthesize_data(l,n,my,g,data_type='continuous'):
                 y[t] = k0
 
     # Scaler X
-    #X = MinMaxScaler().fit_transform(X)
-    return X,y,w
+    X = MinMaxScaler().fit_transform(X)
+    return X,y#,w
 
 
